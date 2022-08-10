@@ -14,7 +14,6 @@ exports.addVipUser = async(req, res) =>  {
             address: data.address,
             txHash: data.txHash,
             amount: data.amount,
-            startTime: data.startTime,
             endTime: data.endTime,
         })
 
@@ -70,7 +69,7 @@ exports.updateVipUser = async(req, res) =>  {
         }
         vipUserModel.find({_id:data.id}).then((data)=>{
             if(data){
-                vipUserModel.findOneAndUpdate({_id:item._id},{startTime:data.starttime, endTime:data.endtime}).then((data)=>{
+                vipUserModel.findOneAndUpdate({_id:item._id},{endTime:data.endtime}).then((data)=>{
                     res.status(200).send({ success: true, msg: "User updated successfully", data: {}, error: '' });
                 })
             }else{

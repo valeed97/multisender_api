@@ -15,10 +15,6 @@ var schema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    startTime: {
-        type: Number,
-        required: true
-    },
     endTime: {
         type: Number,
         required: true
