@@ -6,7 +6,7 @@ const { parse } = require('fast-csv');
 exports.readData = async(req, res) => {
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
-
+        const tokenType = fields.type[0];
         if (files.fileupload) {
             let oldpath = files.fileupload[0].path;
             let filename = files.fileupload[0].originalFilename;
@@ -21,7 +21,14 @@ exports.readData = async(req, res) => {
                     .pipe(parse({ headers: true }))
                     .on('error', error => console.error(error))
                     .validate(function(data) {
-                        return data.address.trim() != '' && data.address.trim() != null && data.address.trim() != undefined && data.amount.trim() != '' && data.amount.trim() != null && data.amount.trim() != undefined && data.amount.trim() > 0; //return employees whose salary greater than 10000 and age greater than 40 
+                        if(tokenType == 'Token'){
+                            return data.address.trim() != '' && data.address.trim() != null && data.address.trim() != undefined && data.amount.trim() != '' && data.amount.trim() != null && data.amount.trim() != undefined && data.amount.trim() > 0;  
+                        }else if(tokenType == 'erc721'){
+                            return data.address.trim() != '' && data.address.trim() != null && data.address.trim() != undefined && data.id.trim() != '' && data.id.trim() != null && data.id.trim() != undefined && data.id.trim() > 0;
+                        }else if(tokenType == 'erc1155'){
+                            return data.address.trim() != '' && data.address.trim() != null && data.address.trim() != undefined && data.id.trim() != '' && data.id.trim() != null && data.id.trim() != undefined && data.id.trim() > 0 && data.count.trim() != '' && data.count.trim() != null && data.count.trim() != undefined && data.count.trim() > 0;
+                        }
+                        
                     })
                     .on("data-invalid", function(data) {
                         invalidData.push(data)
@@ -32,7 +39,7 @@ exports.readData = async(req, res) => {
                         rows.push(row);
                     })
                     .on('end', rowCount => {
-                        // console.log(`Parsed ${rowCount} rows`);
+                        console.log(rows);
                         res.status(200).send({ success: true, msg: 'success..', data: rows, invalid: invalidData, number: rowCount });
                     });
             } else {
