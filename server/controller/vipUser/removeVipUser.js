@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 var vipUserModel = require('../../model/vipUserModel');
 setInterval(async() => {
 

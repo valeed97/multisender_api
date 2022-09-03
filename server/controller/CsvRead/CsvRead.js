@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 var multiparty = require('multiparty');
 const fs = require('fs');
 const path = require('path');
